@@ -1,0 +1,11 @@
+Section "Module"
+    Load           "modesetting"
+EndSection
+
+Section "Device"
+    Identifier     "Device0"
+    Driver         "nvidia"
+    BusID          "PCI:9:0:0" # where the right bus can be found with: lspci | grep VGA
+    Option         "AllowEmptyInitialConfiguration"
+    Option         "AllowExternalGpus" "True"
+EndSection

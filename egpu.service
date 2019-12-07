@@ -1,0 +1,9 @@
+[Unit]
+Description=Disable eGPU initially and always provide stable boot phase
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/egpu stop
+
+[Install]
+WantedBy=multi-user.target

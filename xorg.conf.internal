@@ -1,0 +1,20 @@
+# This is the original file which nvidia-4.4.0 created at /etc/X11/xconf.org.d/nvidia.conf
+# I moved it from xorg.conf.d to here
+
+# This file is provided by xorg-x11-drv-nvidia
+# Do not edit
+
+Section "OutputClass"
+	Identifier "nvidia"
+	MatchDriver "nvidia-drm"
+	Driver "nvidia"
+	Option "AllowEmptyInitialConfiguration"
+	Option "SLI" "Auto"
+	Option "BaseMosaic" "on"
+	Option "AllowExternalGpus" "on"
+EndSection
+
+Section "ServerLayout"
+	Identifier "layout"
+	Option "AllowNVIDIAGPUScreens"
+EndSection

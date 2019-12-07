@@ -1,0 +1,84 @@
+#!/bin/bash
+
+set -o errexit # exit script if a command fails
+set -o nounset # exit when trying to use undeclared variables
+
+# define the configs you manualy put there for xorg
+declare INTERNAL=/etc/X11/xorg.conf.internal
+declare EXTERNAL=/etc/X11/xorg.conf.egpu
+# xorg default config file will be linked to one of the above
+# ensure you do not have any nvidia config in /etc/X11/xorg.conf.d/ at this moment. 
+# this cost me half an hour
+declare LINK=/etc/X11/xorg.conf
+
+# egpu device state
+declare egpu_connected=0
+
+# returns 1 if egpu is connected, 0 if not
+function is_egpu_connected() {
+
+	# read pci id from xorg.conf.egpu
+	declare egpu_pci_id=$(cat $EXTERNAL | grep -Ei "BusID" | grep -oEi '[0-9]+\:[0-9]+\:[0-9]+')
+
+	# create an array by splitting the BUS-ID on ':'
+	declare busArray=(${egpu_pci_id//:/ })
+	declare bus1d=${busArray[0]}
+	declare bus2d=${busArray[1]}
+	declare bus3d=${busArray[2]}
+
+	# convert dec to hex
+	declare bus1h=$(printf "%02x" $bus1d)
+	declare bus2h=$(printf "%02x" $bus2d)
+	declare bus3h=$(printf "%01x" $bus3d)
+
+	if [ $(lspci | grep -iEc "$bus1h:$bus2h.$bus3h") -eq 1 ]; then
+		echo "EGPU is connected."
+		egpu_connected=1
+	else
+		echo "EGPU is disconnected."
+		egpu_connected=0
+	fi
+}
+
+
+function unlink_config() {
+	if test -L $LINK; then
+	    sudo unlink $LINK
+    fi
+}
+
+function link_config() {
+	unlink_config
+	sudo ln -s $1 $LINK
+}
+
+# first and only argument needs to be start or stop
+if [ "$1" != "start" ] && [ "$1" != "stop" ]; then
+	echo "Argument Error: first argument needs to be start/stop"
+	exit 1
+fi
+
+if [ "$1" = "start" ] ; then
+	echo "Setup configuration for external gpu"
+	# only allow usage if an egpu is currently attachted
+	is_egpu_connected
+	if [ ${gpu_connected} != 1 ] ; then
+		echo "Configuration Error: Plug in or change configuration"
+		exit 1
+	fi
+	link_config $EXTERNAL
+else
+	# let always work using the internal gpu
+	echo "Setup configuration for internal gpu"
+	link_config $INTERNAL
+fi
+echo "configuration done"
+
+echo "I will now restart your x-session to the desired gpu."
+echo "If anthing goes wrong, you can still login to a different tty without a desktop environment and fix it."
+
+echo "I will restart X in 3 seconds"
+sleep 3
+sudo systemctl restart display-manager.service
+
+exit 0
