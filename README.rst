@@ -18,6 +18,7 @@ PreConditions
 #############
 
 - setup the appropriate driver for the gpu's you are using
+- you might want blacklist your old driver, I did it with the nouveau driver
 - ensure thunderbolt authorization works properly
 - you should understand basic linux things, for example bash or systemd
 
@@ -33,7 +34,6 @@ You only need to put 4 files at the right locations and you are basically done.
 Then run some commands
 
 .. code-block:: bash
-
     # make the file executable
     sudo chmod +x /usr/local/bin/egpu
 
@@ -44,7 +44,12 @@ Then run some commands
 You are done
 ############
 If both of your xorg config files are right, you should now be able to switch to your egpu using:
-/usr/local/bin/egpu start
+.. code-block:: bash
+    /usr/local/bin/egpu start
+
+If you are done using it fire a stop command, unplug the egpu only after you have X on your internal screen again
+.. code-block:: bash
+    /usr/local/bin/egpu stop
 
 Attention
 #########
