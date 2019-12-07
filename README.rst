@@ -33,10 +33,8 @@ You only need to put 4 files at the right locations and you are basically done.
 
 Then run some commands
 
-.. code-block:: bash
     # make the file executable
     sudo chmod +x /usr/local/bin/egpu
-
     # enable egpu.service
     sudo systemctl daemon-reload
     sudo systemctl enable egpu.service
@@ -44,11 +42,11 @@ Then run some commands
 You are done
 ############
 If both of your xorg config files are right, you should now be able to switch to your egpu using:
-.. code-block:: bash
+
     /usr/local/bin/egpu start
 
 If you are done using it fire a stop command, unplug the egpu only after you have X on your internal screen again
-.. code-block:: bash
+
     /usr/local/bin/egpu stop
 
 Attention
@@ -57,6 +55,5 @@ These are my configs, the might not work for you.
 
 - **xorg.conf.internal** should basically contain what you had before you started using an egpu
 - **xorg.conf.egpu** file could be useful for you, find out the Device ID with
-    .. code-block:: bash
         lspci | grep VGA
         nvidia-smi -L # in case you have nvidia gpus as i do
