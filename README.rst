@@ -34,7 +34,9 @@ You only need to put 4 files at the right locations and you are basically done.
 Then run some commands
 
     # make the file executable
+
     sudo chmod +x /usr/local/bin/egpu
+
     # enable egpu.service
     sudo systemctl daemon-reload
     sudo systemctl enable egpu.service
