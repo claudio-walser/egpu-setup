@@ -38,7 +38,9 @@ Then run some commands
     sudo chmod +x /usr/local/bin/egpu
 
     # enable egpu.service
+
     sudo systemctl daemon-reload
+
     sudo systemctl enable egpu.service
 
 You are done
@@ -57,5 +59,7 @@ These are my configs, the might not work for you.
 
 - **xorg.conf.internal** should basically contain what you had before you started using an egpu
 - **xorg.conf.egpu** file could be useful for you, find out the Device ID with
+        
         lspci | grep VGA
+
         nvidia-smi -L # in case you have nvidia gpus as i do
