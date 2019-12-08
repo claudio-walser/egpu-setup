@@ -11,14 +11,21 @@ This is a very small guide of what I did to setup my egpu.
 **MySoftware**
 
 - Fedora Silverblue 31
-- akmod-nvidia and xorg-x11-drv-nvidia-cuda
+- akmod-nvidia and xorg-x11-drv-nvidia-cuda (version 4.4.0)
 
 
 PreConditions
 #############
 
 - setup the appropriate driver for the gpu's you are using
+- make sure your desktop environment is using xorg - https://www.x.org/wiki/ Will probably be true for most distros
 - you might want blacklist your old driver, I did it with the nouveau driver
+
+    # some of the things going well in silverblue, add kernel arguments. You need to reboot for this to take effect
+
+    sudo rpm-ostree kargs --append=rd.driver.blacklist=nouveau --append=modprobe.blacklist=nouveau --append=nvidia-drm.modeset=1
+
+
 - ensure thunderbolt authorization works properly
 - you should understand basic linux things, for example bash or systemd
 
