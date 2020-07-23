@@ -62,7 +62,7 @@ if [ "$1" = "start" ] ; then
 	echo "Setup configuration for external gpu"
 	# only allow usage if an egpu is currently attachted
 	is_egpu_connected
-	if [ ${gpu_connected} != 1 ] ; then
+	if [ ${egpu_connected} != 1 ] ; then
 		echo "Configuration Error: Plug in or change configuration"
 		exit 1
 	fi
